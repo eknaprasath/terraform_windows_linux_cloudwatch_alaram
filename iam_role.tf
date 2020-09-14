@@ -1,4 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
+  provider = aws.eknaprasathpadmaraj
   name = "lambda_role_cw_alarm_automation"
 
   assume_role_policy = <<EOF
@@ -16,7 +17,7 @@ resource "aws_iam_role" "iam_for_lambda" {
   ]
 }
 EOF
-provider = aws.eknaprasathpadmaraj
+
 }
 
 resource "aws_iam_policy" "lambda_policy" {
