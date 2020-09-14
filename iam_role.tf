@@ -16,6 +16,7 @@ resource "aws_iam_role" "iam_for_lambda" {
   ]
 }
 EOF
+provider = aws.eknaprasathpadmaraj
 }
 
 resource "aws_iam_policy" "lambda_policy" {
@@ -32,13 +33,6 @@ resource "aws_iam_policy" "lambda_policy" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "rds:AddTagsToResource",
-        "config:GetComplianceDetailsByConfigRule",
-        "elasticloadbalancing:RemoveTags",
-        "ec2:DeleteTags",
-        "ec2:CreateTags",
-        "elasticloadbalancing:AddTags",
-        "rds:RemoveTagsFromResource",
         "ec2:DescribeInstanceTypes",
         "ec2:DescribeInstances",
         "ec2:DescribeTags",
