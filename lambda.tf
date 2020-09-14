@@ -2,7 +2,7 @@ resource "aws_lambda_function" "CW-Alarm-Creation-linux" {
   description = "Lambda function to create cloudwatch alarms"
   filename      = "files/cloudwatch_linux.zip"
   function_name = var.lambda_name_linux
-  role          = iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_lambda.arn
   handler       = "cloudwatch_linux.lambda_handler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "CW-Alarm-Creation-windows" {
   description = "Lambda function to create cloudwatch alarms"
   filename      = "files/cloudwatch_windows.zip"
   function_name = var.lambda_name_windows
-  role          = iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_lambda.arn
   handler       = "cloudwatch_windows.lambda_handler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
