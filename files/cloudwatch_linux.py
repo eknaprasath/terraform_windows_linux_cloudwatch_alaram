@@ -6,7 +6,8 @@ ec2 = boto3.resource('ec2')
 cw = boto3.client('cloudwatch')
 #ec2_sns = 'arn:aws:sns:eu-west-1:XXXXXXXX:Topic'
 ec2_sns = os.environ['sns_arn']
-cpu_memory_threshold =  os.environ['cw_cpu_memory_threshold']
+cpu_threshold =  os.environ['cw_cpu_threshold']
+memory_threshold =  os.environ['cw_memory_threshold']
 disk_threshold = os.environ['cw_disk_threshold']
 
 def lambda_handler(event, context):
@@ -48,7 +49,7 @@ def lambda_handler(event, context):
         {'Name': 'InstanceId', 'Value': id},
         {'Name': 'device', 'Value': fs_name[-1]}, {'Name': 'fstype', 'Value': blocks['fstype']}],)
                 
-    cw.put_metric_alarm(AlarmName = "Ec2 "+(instance_name) + " CPU utilization above " +(cpu_memory_threshold) + "%",
+    cw.put_metric_alarm(AlarmName = "Ec2 "+(instance_name) + " CPU utilization above " +(cpu_threshold) + "%",
     AlarmDescription='CPU Utilization ',
     ActionsEnabled=True,
     AlarmActions=[ec2_sns,],
@@ -58,7 +59,7 @@ def lambda_handler(event, context):
     Dimensions=[ {'Name': "InstanceId",'Value': id},],
     Period=300,
     EvaluationPeriods=1,
-    Threshold=float(cpu_memory_threshold),
+    Threshold=float(cpu_threshold),
     ComparisonOperator='GreaterThanOrEqualToThreshold')
     cw.put_metric_alarm(AlarmName = "Ec2 "+(instance_name) + " status check has failed",
     AlarmDescription='status check failure',
@@ -72,7 +73,7 @@ def lambda_handler(event, context):
     EvaluationPeriods=1,
     Threshold=1.0,
     ComparisonOperator='GreaterThanOrEqualToThreshold')
-    cw.put_metric_alarm(AlarmName = "Ec2 "+(instance_name) + " memory utilization above "+(cpu_memory_threshold)+"%",
+    cw.put_metric_alarm(AlarmName = "Ec2 "+(instance_name) + " memory utilization above "+(memory_threshold)+"%",
     AlarmDescription='High Memory Utilization',
     ActionsEnabled=True,
     AlarmActions=[ec2_sns],
@@ -82,7 +83,5 @@ def lambda_handler(event, context):
     Dimensions=[ {'Name': "InstanceId",'Value': id},],
     Period=300,
     EvaluationPeriods=1,
-    Threshold=float(cpu_memory_threshold),
+    Threshold=float(memory_threshold),
     ComparisonOperator='GreaterThanOrEqualToThreshold')
- 
- 
