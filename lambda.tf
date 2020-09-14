@@ -2,7 +2,7 @@ resource "aws_lambda_function" "CW-Alarm-Creation-linux" {
   description = "Lambda function to create cloudwatch alarms"
   filename      = "files/cloudwatch_linux.zip"
   function_name = var.lambda_name_linux
-  role          = var.iam_role
+  role          = iam_for_lambda.arn
   handler       = "cloudwatch_linux.lambda_handler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
@@ -18,7 +18,8 @@ resource "aws_lambda_function" "CW-Alarm-Creation-linux" {
     variables = {
       sns_arn = var.sns_arn,
       cw_disk_threshold = var.cw_disk_threshold,
-      cw_cpu_memory_threshold = var.cw_cpu_memory_threshold
+      cw_cpu_threshold = var.cw_cpu_threshold,
+      cw_memory_threshold = var.cw_memory_threshold
     }
   }
 }
@@ -27,7 +28,7 @@ resource "aws_lambda_function" "CW-Alarm-Creation-windows" {
   description = "Lambda function to create cloudwatch alarms"
   filename      = "files/cloudwatch_windows.zip"
   function_name = var.lambda_name_windows
-  role          = var.iam_role
+  role          = iam_for_lambda.arn
   handler       = "cloudwatch_windows.lambda_handler"
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
@@ -43,7 +44,8 @@ resource "aws_lambda_function" "CW-Alarm-Creation-windows" {
     variables = {
       sns_arn = var.sns_arn,
       cw_disk_threshold = var.cw_disk_threshold,
-      cw_cpu_memory_threshold = var.cw_cpu_memory_threshold
+      cw_cpu_threshold = var.cw_cpu_threshold,
+      cw_memory_threshold = var.cw_memory_threshold
     }
   }
 }
